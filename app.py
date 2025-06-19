@@ -10,7 +10,7 @@ st.sidebar.divider()
 st.title("AI-Q Score Visualizer")
 st.divider()
 
-st.markdown("""
+st.markdown(r"""
 In this lab, we explore the "AI-Q Score", a metric developed to quantify an individual's risk of job displacement due due to the increasing impact of Artificial Intelligence on the job market. This application allows you to interactively adjust various factors that contribute to this score and visualize their real-time impact.
 
 ### Core Concepts
