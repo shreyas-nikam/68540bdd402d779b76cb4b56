@@ -1,23 +1,34 @@
 import pytest
-from definition_97d84c70f09b411d93027496911623b9 import IAI
+from definition_113e5a8d5eb14a4d97d11fd42bd8dcf1 import IAI
 
-@pytest.mark.parametrize("VC_Funding, R_D_Spend, Public_Salience, expected", [
-    (1000000, 500000, 0.75, None),
-    (0, 0, 0, None),
-    (-100000, -50000, -0.25, None),
-    (500000, 250000, 0.5, None),
-    (1e6, 5e5, 0.75, None),
-    (1000000.50, 500000.75, 0.75, None),
-    ("1000000", "500000", "0.75", None),
-    (None, None, None, TypeError),
-    ([1000000], [500000], [0.75], TypeError),
-    ((1000000,), (500000,), (0.75,), TypeError)
-
+@pytest.mark.parametrize("vc_funding, r_d_spend, public_salience, expected", [
+    (100, 50, 25, None),  # Example with valid inputs - Replace None with expected value if known.
+    (0, 0, 0, None),      # All inputs zero - Replace None with expected value if known.
+    (1000, 500, 250, None), # Large valid inputs - Replace None with expected value if known.
+    (-100, 50, 25, None), # Negative VC Funding  - Replace None with expected behavior/expected exception.
+    (100, -50, 25, None), # Negative R&D Spend  - Replace None with expected behavior/expected exception.
+    (100, 50, -25, None), # Negative Public Salience  - Replace None with expected behavior/expected exception.
+    (100, 50, 25.5, None), # Float Public Salience - Replace None with expected value if known.
+    (100.5, 50, 25, None), # Float VC Funding - Replace None with expected value if known.
+    (100, 50.5, 25, None), # Float R&D Spend - Replace None with expected value if known.
+    ("100", 50, 25, TypeError), # String VC Funding
+    (100, "50", 25, TypeError), # String R&D Spend
+    (100, 50, "25", TypeError), # String Public Salience
+    (None, 50, 25, TypeError), # None VC Funding
+    (100, None, 25, TypeError), # None R&D Spending
+    (100, 50, None, TypeError), # None Public Salience
+    ([100], 50, 25, TypeError), # List VC Funding
+    (100, [50], 25, TypeError), # List R&D Spending
+    (100, 50, [25], TypeError), # List Public Salience
+    (100, 50, 25, None)  # Same as first case, checking for consistent behavior
 ])
-def test_IAI(VC_Funding, R_D_Spend, Public_Salience, expected):
+def test_IAI(vc_funding, r_d_spend, public_salience, expected):
     try:
-        result = IAI(VC_Funding, R_D_Spend, Public_Salience)
+        result = IAI(vc_funding, r_d_spend, public_salience)
         if expected is not None:
             assert result == expected
     except Exception as e:
-        assert isinstance(e, TypeError)
+        if isinstance(expected, type) and issubclass(expected, Exception):
+            assert isinstance(e, expected)
+        else:
+            raise #Re-raise the exception if it wasn't expected
