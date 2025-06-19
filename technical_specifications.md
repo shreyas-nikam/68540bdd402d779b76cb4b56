@@ -1,4 +1,4 @@
-# Overview
+# Overview 2
 This document provides technical specifications for a Streamlit application named "AI-Q Score Visualizer". The application's primary goal is to visualize the AI-Q Score, a metric that quantifies an individual's risk of job displacement due to AI, as described in [Krishnamurthy, 2025]. The application utilizes a synthetic dataset to demonstrate the AI-Q score's calculation and the impact of various factors on overall risk. Interactive elements, including data input forms and charts, enable users to explore the concepts and visualize real-time updates.
 
 ## Step-by-Step Development Process
