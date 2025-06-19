@@ -1,175 +1,178 @@
 
 # AI-Q Score Visualizer
 
-This Streamlit application, "AI-Q Score Visualizer", is designed to help users understand and visualize the AI-Q Score, a metric that quantifies an individual's risk of job displacement due to AI. The application uses a synthetic dataset to demonstrate the calculation of the AI-Q score and the impact of various factors on overall risk. Interactive elements allow users to explore the concepts and see real-time updates.
+This repository contains the Streamlit application for the "AI-Q Score Visualizer" lab. The application aims to help users understand and visualize the AI-Q Score, a metric designed to quantify an individual's risk of job displacement due to advancements in Artificial Intelligence.
 
-## Business Logic Explained
+## Overview of the AI-Q Score
 
-The AI-Q Score is a comprehensive metric composed of two main components: **Idiosyncratic Risk** and **Systematic Risk**.
+The AI-Q Score is a comprehensive metric described in [Krishnamurthy, 2025] that evaluates an individual's vulnerability to AI-driven job displacement. It comprises two main components: Idiosyncratic Risk and Systematic Risk.
 
-### 1. Idiosyncratic Risk ( $V_i(t)$ )
+### Idiosyncratic Risk ($V_i(t)$)
 
-Idiosyncratic Risk, or Vulnerability, is an individual-specific risk that can be actively managed through personal actions. It is calculated as a composite of three key factors: Human Capital, Company Risk, and Upskilling efforts.
+Idiosyncratic Risk, or Vulnerability, is an individual-specific risk that can be actively managed through personal actions. It is calculated as a composite of three key factors:
 
-$$
-V_i(t) = f(F_{HC}, F_{CR}, F_{US})
-$$
+$$V_i(t) = f(F_{HC}, F_{CR}, F_{US})$$
 
-#### 1.1 Human Capital Factor ( $F_{HC}$ )
+Where:
+- $V_i(t)$: Idiosyncratic Risk at time $t$
+- $F_{HC}$: Human Capital Factor
+- $F_{CR}$: Company Risk Factor
+- $F_{US}$: Upskilling Factor
 
-This factor assesses an individual's resilience based on their educational and professional background. A higher human capital factor generally indicates lower idiosyncratic risk.
+#### Human Capital Factor ($F_{HC}$)
 
-$$
-F_{HC} = f_{role} \cdot f_{level} \cdot f_{field} \cdot f_{school} \cdot f_{exp}
-$$
+This factor assesses an individual's resilience based on their educational and professional background. It considers various aspects of an individual's profile:
 
-*   **Role Multiplier ($f_{role}$)**: Reflects the inherent AI-vulnerability of one's job role.
-*   **Education Level Factor ($f_{level}$)**: Higher education levels often correlate with more specialized skills, potentially reducing vulnerability.
-*   **Education Field Factor ($f_{field}$)**: Certain fields (e.g., creative arts, highly specialized research) may be less susceptible to AI automation.
-*   **Institution Tier Factor ($f_{school}$)**: The prestige or quality of an educational institution can impact perceived resilience.
-*   **Experience Factor ($f_{exp}$)**: More years of experience in a field can indicate deeper expertise and adaptability.
+$$F_{HC} = f_{role} \cdot f_{level} \cdot f_{field} \cdot f_{school} \cdot f_{exp}$$
 
-#### 1.2 Company Risk Factor ( $F_{CR}$ )
+Where:
+- $F_{HC}$: Human Capital Factor
+- $f_{role}$: Role Multiplier (e.g., impact of current job role)
+- $f_{level}$: Education Level Factor (e.g., degree attained)
+- $f_{field}$: Education Field Factor (e.g., STEM vs. Humanities)
+- $f_{school}$: Institution Tier Factor (e.g., prestige of educational institution)
+- $f_{exp}$: Experience Factor (e.g., years in the industry)
 
-This factor quantifies the stability and growth prospects of the individual's current employer, particularly regarding their adoption of AI and financial health. A company with higher risk contributes to higher individual idiosyncratic risk.
+This formula highlights that a strong educational background, relevant field expertise, and significant professional experience contribute to lower individual risk.
 
-$$
-F_{CR} = w_1 \cdot S_{senti} + w_2 \cdot S_{fin} + w_3 \cdot S_{growth}
-$$
+#### Company Risk Factor ($F_{CR}$)
 
-*   **Sentiment Score ($S_{senti}$)**: General market sentiment or internal employee sentiment regarding the company's future.
-*   **Financial Health Score ($S_{fin}$)**: Reflects the company's financial stability (e.g., revenue growth, profitability).
-*   **Growth & AI Adoption Score ($S_{growth}$)**: Assesses how aggressively the company is growing and integrating AI into its operations.
-*   **Weights ($w_1, w_2, w_3$)**: Calibration weights for each score.
+This factor quantifies the stability and growth prospects of the individual's current employer, particularly concerning their adoption of AI and financial health.
 
-#### 1.3 Upskilling Factor ( $F_{US}$ )
+$$F_{CR} = w_1 \cdot S_{senti} + w_2 \cdot S_{fin} + w_3 \cdot S_{growth}$$
 
-This factor quantifies an individual's continuous learning and skill development efforts. Engaging in upskilling reduces idiosyncratic risk.
+Where:
+- $F_{CR}$: Company Risk Factor
+- $S_{senti}$: Sentiment Score (e.g., market perception, employee morale)
+- $S_{fin}$: Financial Health Score (e.g., profitability, debt levels)
+- $S_{growth}$: Growth & AI Adoption Score (e.g., innovation, investment in AI)
+- $w_1, w_2, w_3$: Weights for each score
 
-$$
-F_{US} = 1 - (\gamma_{gen} \cdot P_{gen}(t) + \gamma_{spec} \cdot P_{spec}(t))
-$$
+A company that is financially robust, has positive market sentiment, and actively invests in AI adoption tends to offer more job security.
 
-*   **Training progress in general skills ($P_{gen}(t)$)**: Progress in broad, transferable skills (e.g., critical thinking, communication, data literacy).
-*   **Training progress in firm-specific skills ($P_{spec}(t)$)**: Progress in skills highly relevant to the current company or industry.
-*   **Weighting parameters ($\gamma_{gen}, \gamma_{spec}$)**: Parameters to weigh the importance of general vs. specific skills.
+#### Upskilling Factor ($F_{US}$)
 
-### 2. Systematic Risk ( $H_i$ )
+This factor recognizes and rewards continuous learning and skill development, differentiating between general and firm-specific skills.
 
-Systematic Risk reflects the broader occupational hazard and macro-economic environment, which is largely outside an individual's direct control.
+$$F_{US} = 1 - (\gamma_{gen} \cdot P_{gen}(t) + \gamma_{spec} \cdot P_{spec}(t))$$
 
-$$
-H_i = H_{base}(t) \cdot (w_{econ} \cdot M_{econ} + w_{inno} \cdot IAI)
-$$
+Where:
+- $F_{US}$: Upskilling Factor
+- $P_{gen}(t)$: Training progress in general skills at time $t$ (e.g., transferable skills like data analysis)
+- $P_{spec}(t)$: Training progress in firm-specific skills at time $t$ (e.g., internal software proficiency)
+- $\gamma_{gen}, \gamma_{spec}$: Weighting parameters for general and specific skills
 
-*   **Base Occupational Hazard ($H_{base}(t)$)**: The inherent AI-driven risk level of a particular occupation at a given time.
-*   **Economic Climate Modifier ($M_{econ}$)**: Reflects the macroeconomic environment's effect on AI investment and adoption.
-*   **AI Innovation Index ($IAI$)**: A momentum indicator reflecting the velocity of AI development and adoption.
-*   **Calibration weights ($w_{econ}, w_{inno}$)**: Weights for the economic and AI innovation factors.
+Actively engaging in upskilling, especially in future-proof skills, can significantly reduce an individual's Idiosyncratic Risk.
 
-#### 2.1 Base Occupational Hazard ( $H_{base}(k)$ )
+### Systematic Risk ($H_i$)
 
-This foundational score of an occupation considers the time it takes to transition to a new industry, reflecting a dynamic risk profile.
+Systematic Risk reflects the broader occupational hazard and the general economic and technological environment, largely beyond an individual's direct control.
 
-$$
-H_{base}(k) = (1 - \frac{k}{TTV}) \cdot H_{current} + (\frac{k}{TTV}) \cdot H_{target}
-$$
+$$H_i = H_{base}(t) \cdot (w_{econ} \cdot M_{econ} + w_{inno} \cdot IAI)$$
 
-*   **$k$**: Months elapsed since transition pathway completion.
-*   **$TTV$**: Total Time-to-Value period (time to transition fully).
-*   **$H_{current}$**: Base Occupational Hazard of the original industry.
-*   **$H_{target}$**: Base Occupational Hazard of the new target industry.
+Where:
+- $H_i$: Systematic Risk
+- $H_{base}(t)$: Base Occupational Hazard at time $t$
+- $M_{econ}$: Economic Climate Modifier
+- $IAI$: AI Innovation Index
+- $w_{econ}, w_{inno}$: Calibration weights
 
-#### 2.2 Economic Climate Modifier ( $M_{econ}$ )
+This formula indicates that the overall market conditions and the pace of AI innovation influence the macro-level risk.
 
-A composite index reflecting how the overall economic environment impacts AI investment and job displacement.
+#### Base Occupational Hazard ($H_{base}(k)$)
 
-$$
-M_{econ} = f(GDP\ Growth, Sector\ Employment, Interest\ Rates)
-$$
+This represents the foundational risk score of an occupation, which can change as an individual transitions to a new industry.
 
-Factors include GDP growth, employment trends in relevant sectors, and interest rates, all influencing the pace of AI adoption.
+$$H_{base}(k) = (1 - \frac{k}{TTV}) \cdot H_{current} + (\frac{k}{TTV}) \cdot H_{target}$$
 
-#### 2.3 AI Innovation Index ( $IAI$ )
+Where:
+- $H_{base}(k)$: Base Occupational Hazard after *k* months
+- $k$: Months elapsed since transition pathway completion
+- $TTV$: Total Time-to-Value period (time to fully transition)
+- $H_{current}$: Base Occupational Hazard of the original industry
+- $H_{target}$: Base Occupational Hazard of the new target industry
 
-This index captures the speed of technological change and how rapidly AI is developing and being integrated across industries.
+This formula accounts for the time it takes to mitigate risk by transitioning to a less vulnerable industry.
 
-$$
-IAI = f(VC\ Funding, R\&D\ Spend, Public\ Salience)
-$$
+#### Economic Climate Modifier ($M_{econ}$)
 
-Key components include Venture Capital Funding in AI, Research and Development Spending in AI, and Public awareness/discussion of AI.
+A composite index reflecting the macroeconomic environment's effect on AI investment and adoption.
 
----
+$$M_{econ} = f(GDP\ Growth, Sector\ Employment, Interest\ Rates)$$
 
-## Getting Started
+Where:
+- $M_{econ}$: Economic Climate Modifier
+- $GDP\ Growth$: GDP Growth rate
+- $Sector\ Employment$: Employment in the sector
+- $Interest\ Rates$: Interest rates
 
-### Prerequisites
+A robust economic climate generally supports innovation and job creation, but can also accelerate AI adoption, leading to shifts in employment.
 
-*   Python 3.8+
-*   Docker (optional, for containerized deployment)
+#### AI Innovation Index ($IAI$)
 
-### Installation
+A momentum indicator reflecting the velocity of AI development and adoption.
 
-1.  **Clone the repository:**
+$$IAI = f(VC\ Funding, R\&D\ Spend, Public\ Salience)$$
+
+Where:
+- $IAI$: AI Innovation Index
+- $VC\ Funding$: Venture Capital Funding in AI
+- $R\&D\ Spend$: Research and Development Spending in AI
+- $Public\ Salience$: Public awareness/discussion of AI
+
+A higher AI Innovation Index suggests faster technological change and potentially quicker job displacement in certain sectors.
+
+## Application Features
+
+The Streamlit application provides:
+- Interactive input forms to adjust parameters for Human Capital, Company Risk, Upskilling, Economic Climate, and AI Innovation.
+- Real-time display of the calculated AI-Q Score.
+- Visualizations (bar charts, line charts) to illustrate the breakdown of Idiosyncratic Risk and the dynamics of Systematic Risk.
+
+## Setup and Running the Application
+
+To set up and run the AI-Q Score Visualizer:
+
+1.  **Clone the repository**:
     ```bash
     git clone <repository-url>
-    cd ai-q-score-visualizer
+    cd <repository-name>
     ```
-2.  **Create a virtual environment (recommended):**
+
+2.  **Create a virtual environment (recommended)**:
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows: `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
     ```
-3.  **Install dependencies:**
+
+3.  **Install dependencies**:
     ```bash
     pip install -r requirements.txt
     ```
 
-### Running the Application
-
-1.  **Locally:**
+4.  **Run the Streamlit application**:
     ```bash
     streamlit run app.py
     ```
-    The application will open in your web browser, typically at `http://localhost:8501`.
 
-2.  **Using Docker:**
-    1.  **Build the Docker image:**
-        ```bash
-        docker build -t ai-q-score-visualizer .
-        ```
-    2.  **Run the Docker container:**
-        ```bash
-        docker run -p 8501:8501 ai-q-score-visualizer
-        ```
-    The application will be accessible in your web browser at `http://localhost:8501`.
+The application will open in your web browser.
 
-## Application Structure
+## Docker Deployment
 
-*   `app.py`: The main Streamlit application file, handling navigation and overall layout.
-*   `requirements.txt`: Lists all Python dependencies.
-*   `Dockerfile`: Defines the Docker image for containerized deployment.
-*   `README.md`: This file, providing an overview and instructions.
-*   `application_pages/`: Directory containing individual page modules for the Streamlit app.
-    *   `application_pages/data_generation.py`: Contains functions for synthetic data generation.
-    *   `application_pages/calculations.py`: Contains functions for AI-Q Score calculations.
-    *   `application_pages/home.py`: The home page explaining concepts.
-    *   `application_pages/idiosyncratic_risk.py`: Page for Idiosyncratic Risk visualization and inputs.
-    *   `application_pages/systematic_risk.py`: Page for Systematic Risk visualization and inputs.
-    *   `application_pages/overall_score.py`: Page to display the combined AI-Q Score and scenario analysis.
+You can also run the application using Docker:
 
-## Core Features
+1.  **Build the Docker image**:
+    ```bash
+    docker build -t ai-q-score-visualizer .
+    ```
 
-*   **Interactive Input Forms**: Adjust parameters for Human Capital, Company Risk, Upskilling, Economic Climate, and AI Innovation.
-*   **Real-time AI-Q Score Display**: See the calculated AI-Q Score update instantly.
-*   **Visualizations**:
-    *   Bar charts/Pie charts for Idiosyncratic Risk factor breakdown.
-    *   Line charts for Systematic Risk dynamics.
-    *   Scatter plots for correlations between factors.
+2.  **Run the Docker container**:
+    ```bash
+    docker run -p 8501:8501 ai-q-score-visualizer
+    ```
 
-## License
+Access the application in your browser at `http://localhost:8501`.
 
+---
 © 2025 QuantUniversity. All Rights Reserved.
-
 The purpose of this demonstration is solely for educational use and illustration. Any reproduction of this demonstration requires prior written consent from QuantUniversity.
