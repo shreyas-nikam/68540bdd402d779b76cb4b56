@@ -1,40 +1,27 @@
 import pytest
-from definition_6a21fce14508444b81d772bf8ea2f9d5 import M_econ
+from definition_76eba6bac9cd46dd8efa08be458a9001 import M_econ
 
-@pytest.mark.parametrize("gdp_growth, sector_employment, interest_rates, expected", [
-    (2.0, 0.5, 0.05, None),
-    (3.5, 0.7, 0.03, None),
-    (1.0, 0.3, 0.07, None),
-    (0.0, 0.0, 0.10, None),
-    (-1.0, -0.1, 0.12, None),
-    (5.0, 1.0, 0.01, None),
-    (-2.0, -0.5, 0.15, None),
-    (2.5, 0.6, 0.04, None),
-    (1.5, 0.4, 0.06, None),
-    (3.0, 0.8, 0.02, None),
-    (0.5, 0.2, 0.08, None),
-    (-0.5, -0.2, 0.11, None),
-    (4.0, 0.9, 0.00, None),
-    (-3.0, -0.8, 0.20, None),
-    (1.7, 0.35, 0.055, None),
-    (2.8, 0.75, 0.025, None),
-    (0.3, 0.15, 0.085, None),
-    (-0.3, -0.15, 0.115, None),
-    (3.7, 0.85, 0.005, None),
-    (-2.7, -0.75, 0.175, None),
-    ("abc", 0.5, 0.05, TypeError),
-    (2.0, "def", 0.05, TypeError),
-    (2.0, 0.5, "ghi", TypeError),
-    (None, 0.5, 0.05, TypeError),
-    (2.0, None, 0.05, TypeError),
-    (2.0, 0.5, None, TypeError),
-    ([1,2], 0.5, 0.05, TypeError),
-    (2.0, [1,2], 0.05, TypeError),
-    (2.0, 0.5, [1,2], TypeError)
+@pytest.mark.parametrize("GDP_Growth, Sector_Employment, Interest_Rates, expected", [
+    (2.0, 150000, 3.0, None),  # Example values, replace None with expected value once implemented
+    (0.0, 100000, 5.0, None),  # Stagnant GDP growth
+    (5.0, 200000, 1.0, None),  # High GDP growth, low interest rates
+    (-1.0, 90000, 7.0, None), # Negative GDP Growth
+    (2.5, 125000, 4.0, None), #Mid-range values
+    (10.0, 250000, 0.5, None), # Edge case: very high growth, very low rates
+    (-5.0, 50000, 10.0, None), # Edge case: severe recession, high rates
+    (2.0, 150000.5, 3.0, None),  #Float Employment values.
+    (2.0, 150000, 3.05, None),  #Float Interest Rate values
+    ("abc", 150000, 3.0, TypeError), #Invalid GDP type.
+    (2.0, "abc", 3.0, TypeError), #Invalid Employment type.
+    (2.0, 150000, "abc", TypeError), #Invalid Interest Rate type.
+    (None, 150000, 3.0, TypeError), # GDP is none.
+    (2.0, None, 3.0, TypeError), # Sector employment is none.
+    (2.0, 150000, None, TypeError), # Interest rates is none.
+    (2, 150000, 3, None), #Int GDP, Employment, Interest rates
 ])
-def test_M_econ(gdp_growth, sector_employment, interest_rates, expected):
+def test_M_econ(GDP_Growth, Sector_Employment, Interest_Rates, expected):
     try:
-        result = M_econ(gdp_growth, sector_employment, interest_rates)
-        assert result is None # Since the function has pass, the result will be None
+        result = M_econ(GDP_Growth, Sector_Employment, Interest_Rates)
+        assert result == expected
     except Exception as e:
         assert isinstance(e, expected)
