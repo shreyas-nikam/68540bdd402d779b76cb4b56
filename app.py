@@ -26,9 +26,9 @@ The AI-Q Score is composed of two main components:
     $$V_i(t) = f(F_{HC}, F_{CR}, F_{US})$$
 
     Where:
-    *   $$F_{HC} = f_{role} \cdot f_{level} \cdot f_{field} \cdot f_{school} \cdot f_{exp}$$
-    *   $$F_{CR} = w_1 \cdot S_{senti} + w_2 \cdot S_{fin} + w_3 \cdot S_{growth}$$
-    *   $$F_{US} = 1 - (\gamma_{gen} \cdot P_{gen}(t) + \gamma_{spec} \cdot P_{spec}(t))$$
+    *   $$F_{HC} = f_{role} \\cdot f_{level} \\cdot f_{field} \\cdot f_{school} \\cdot f_{exp}$$
+    *   $$F_{CR} = w_1 \\cdot S_{senti} + w_2 \\cdot S_{fin} + w_3 \\cdot S_{growth}$$
+    *   $$F_{US} = 1 - (\\gamma_{gen} \\cdot P_{gen}(t) + \\gamma_{spec} \\cdot P_{spec}(t))$$
 
 2.  **Systematic Risk ($$H_i$$)**: This reflects the broader, macro-level risks influenced by the economic climate and the pace of AI innovation. These factors are generally beyond an individual's direct control. It is a function of:
     *   **Base Occupational Hazard ($$H_{base}(t)$$)**: The inherent risk of your occupation, potentially influenced by career transitions.
@@ -36,12 +36,12 @@ The AI-Q Score is composed of two main components:
     *   **AI Innovation Index ($$IAI$$)**: The velocity of AI development, measured by VC funding, R&D spend, and public salience.
 
     The formula for Systematic Risk is:
-    $$H_i = H_{base}(t) \cdot (w_{econ} \cdot M_{econ} + w_{inno} \cdot IAI)$$
+    $$H_i = H_{base}(t) \\cdot (w_{econ} \\cdot M_{econ} + w_{inno} \\cdot IAI)$$
 
     Where:
-    *   $$H_{base}(k) = (1 - \frac{k}{TTV}) \cdot H_{current} + (\frac{k}{TTV}) \cdot H_{target}$$
-    *   $$M_{econ} = f(GDP\ Growth, Sector\ Employment, Interest\ Rates)$$
-    *   $$IAI = f(VC\ Funding, R\&D\ Spend, Public\ Salience)$$
+    *   $$H_{base}(k) = (1 - \\frac{k}{TTV}) \\cdot H_{current} + (\\frac{k}{TTV}) \\cdot H_{target}$$
+    *   $$M_{econ} = f(GDP\\ Growth, Sector\\ Employment, Interest\\ Rates)$$
+    *   $$IAI = f(VC\\ Funding, R\\&D\\ Spend, Public\\ Salience)$$
 
 The AI-Q Score is the combination of these two risk components, providing a holistic view of an individual's vulnerability to AI-driven job displacement.
 
